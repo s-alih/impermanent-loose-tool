@@ -1,0 +1,89 @@
+ {
+        positions(where:{id: 5}) {
+          id
+        	liquidity
+    collectedFeesToken0
+    collectedFeesToken1
+    			depositedToken0
+    			depositedToken1
+                withdrawnToken0
+                withdrawnToken1
+    			transaction{
+            mints{
+              sender
+              owner
+              amountUSD,
+              
+            }
+          }
+    			pool{
+            totalValueLockedUSD
+            liquidity
+          }
+          token0 {
+            id
+            symbol
+            name
+            decimals
+            derivedETH
+          }
+          token1 {
+            id
+            symbol
+            name
+            decimals
+            derivedETH
+          }
+ 
+        }
+      }
+
+       {
+  positionSnapshots(where:{owner:"0x11e4857bb9993a50c685a79afad4e6f65d518dda"}){
+    position{
+    owner
+          id
+        	liquidity
+    collectedFeesToken0
+    collectedFeesToken1
+    			depositedToken0
+    			depositedToken1
+    withdrawnToken0
+    withdrawnToken1
+    			transaction{
+            mints{
+              sender
+              owner
+              amountUSD,
+              
+            }
+            burns{
+              owner,
+              amount0,
+              amount1
+            }
+          }
+    			pool{
+            totalValueLockedUSD
+            liquidity
+          }
+          token0 {
+            id
+            symbol
+            name
+            decimals
+            derivedETH
+          }
+          token1 {
+            id
+            symbol
+            name
+            decimals
+            derivedETH
+          }
+ 
+        }
+    
+  }
+        
+      }

@@ -1,0 +1,142 @@
+{
+  positionSnapshots(where:{owner:"0x11e4857bb9993a50c685a79afad4e6f65d518dda",}){
+    id,
+    owner,
+   position{
+    tickUpper{
+      price0,
+      price1
+    }
+    tickLower{
+      price0,
+      price1
+    }
+    token0{
+      name
+    }
+    token1{
+      name
+    }
+  }
+    depositedToken0,
+    withdrawnToken0,
+  
+   
+    depositedToken1,
+    withdrawnToken1,
+    pool{
+      token0Price,
+      token1Price
+    }
+    
+  
+  }
+}
+{
+        "id": "8#12369863",
+        "owner": "0x11e4857bb9993a50c685a79afad4e6f65d518dda",
+        "position": {
+          "tickUpper": {
+            "price0": "1.00100045012002100252021001200045",
+            "price1": "0.9990005497800714799850038562430514"
+          },
+          "tickLower": {
+            "price0": "0.9990005497800714799850038562430514",
+            "price1": "1.00100045012002100252021001200045"
+          },
+          "token0": {
+            "name": "USD Coin"
+          },
+          "token1": {
+            "name": "Tether USD"
+          }
+        },
+        "depositedToken0": "10599.999999",
+        "withdrawnToken0": "0",
+        "depositedToken1": "10599.999999",
+        "withdrawnToken1": "0",
+        "pool": {
+          "token0Price": "1.00001242778483586237954586335944",
+          "token1Price": "0.9999875723696120541014706754338633"
+        }
+      }
+
+
+      {
+      positionSnapshots( where:{owner:"0x11e4857bb9993a50c685a79afad4e6f65d518dda",liquidity_gt:0,}){
+        id,
+        owner,
+        position {
+          owner
+          id
+          liquidity
+          collectedFeesToken0
+          collectedFeesToken1
+          depositedToken0
+          depositedToken1
+          withdrawnToken0
+          withdrawnToken1
+          tickLower {
+            price0
+            price1
+          }
+          tickUpper {
+            price0
+            price1
+          }
+
+          transaction {
+            mints {
+              sender
+              owner
+              amountUSD
+            }
+            burns {
+              owner
+              amount
+            }
+            collects {
+              owner
+              amount0
+              amountUSD
+            }
+          }
+          pool {
+            id
+            totalValueLockedUSD
+            totalValueLockedToken0
+            totalValueLockedToken1
+            liquidity
+            token0Price
+            token1Price
+          }
+          token0 {
+            id
+            symbol
+            name
+            decimals
+            derivedETH
+          }
+          token1 {
+            id
+            symbol
+            name
+            decimals
+            derivedETH
+          }
+        }
+        depositedToken0,
+        withdrawnToken0,
+      
+       
+        depositedToken1,
+        withdrawnToken1,
+        pool{
+          token0Price,
+          token1Price,
+          sqrtPrice,
+        }
+        
+      
+      }
+    }
