@@ -13,6 +13,11 @@ export interface Position {
   withdrawnToken1: string;
 }
 
+export interface Result {
+  pool: string;
+  loss: number;
+}
+
 export interface PositionSnapshot {
   id: string;
   owner: string;
