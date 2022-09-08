@@ -1,3 +1,4 @@
+// --- user positions -----
 export interface Position {
   id: string;
   owner: string;
@@ -13,6 +14,7 @@ export interface Position {
   withdrawnToken1: string;
 }
 
+// -------- Returning result with impermenent loss -----
 export interface Result {
   pool: string;
   loss: number;

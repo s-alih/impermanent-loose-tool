@@ -4,11 +4,13 @@ import express from 'express';
 import indexRouter from './api/index';
 
 async function startServer() {
-  // load app
+  // ------------------------ load app ------------------------ //
   const app = express();
+
+  // ---------------- routes ----------------------//
   indexRouter(app);
 
-  // listening
+  // ------------ listening ---------------//
   app.listen(8000, () => {
     console.log(`
         ################################################

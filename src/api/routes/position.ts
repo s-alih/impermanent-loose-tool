@@ -8,6 +8,7 @@ const route = Router();
 export default (app: Router) => {
   app.use('/user/position', route);
 
+  // -------------- find impermenent loss ----------------------- //
   route.get('/impelosses', async (req: Request, res: Response, next: NextFunction) => {
     let postions = Container.get(Position);
 

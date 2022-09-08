@@ -3,6 +3,7 @@ import { Service } from 'typedi';
 
 @Service()
 export default class Api {
+  // -------------- fetching current price of token using moralis api -----------------
   async getPrice(tokenAddress: string) {
     const url = `https://deep-index.moralis.io/api/v2/erc20/${tokenAddress}/price?chain=eth`;
     const options = {
@@ -19,9 +20,5 @@ export default class Api {
     } catch (e) {
       console.log(e);
     }
-
-    // .then((res) => res.json())
-    // .then((json) => console.log(json))
-    // .catch((err) => console.error('error:' + err));
   }
 }

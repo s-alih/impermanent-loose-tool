@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router } from 'express';
 
 import position from './routes/position';
 
@@ -7,7 +7,6 @@ const route = Router();
 export default (app: Router) => {
   app.use('/', route);
 
-
-  // users liquidity positions
+  // --------------- start of position route ----------------- //
   position(app);
 };
