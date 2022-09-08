@@ -1,4 +1,4 @@
-export interface Postion {
+export interface Position {
   id: string;
   owner: string;
   liquidity: string;
@@ -16,7 +16,7 @@ export interface Postion {
 export interface PositionSnapshot {
   id: string;
   owner: string;
-  position: Postion;
+  position: Position;
   liquidity: string;
   pool: Pool;
 }

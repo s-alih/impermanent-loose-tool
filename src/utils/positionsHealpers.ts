@@ -1,4 +1,4 @@
-import { Postion, PositionSnapshot, Pool } from '../interfaces/positions';
+import { Position, PositionSnapshot, Pool } from '../interfaces/positions';
 import GraphQueries from '../api/graph/queries';
 import { Service } from 'typedi';
 import Api from '../api/exApi';
@@ -8,7 +8,6 @@ const api = Container.get(Api);
 const TICK_BASE = 1.0001;
 @Service()
 export default class Positions {
-  constructor() {}
   // async fetchUserPositions(userAddress: string): Promise<Postion[]> {
   //   let positions = await GraphQueries.getUserOpenPositions(userAddress);
   //   return positions;
@@ -60,7 +59,7 @@ export default class Positions {
   //   let p_b = Math.sqrt(position.tickUpper.tickIdx);
   // }
 
-  async findPositionsByUserAddress(userAddress: string): Promise<Postion[]> {
+  async findPositionsByUserAddress(userAddress: string): Promise<Position[]> {
     let positions = await GraphQueries.getPositionsByUserAddress(userAddress);
     return positions;
   }
@@ -165,6 +164,52 @@ export default class Positions {
   //   }
   // }
 
+  async findCurrentAmount(position: Position) {
+    let liquidity = parseFloat(position.liquidity);
+    let tickerLower = parseFloat(position.tickLower.tickIdx);
+    let tickerUpper = parseFloat(position.tickUpper.tickIdx);
+    let poolId = position.pool.id;
+
+    let token0 = position.token0.symbol;
+    let token1 = position.token1.symbol;
+    let decimals0 = parseInt(position.token0.decimals);
+    let decimals1 = parseInt(position.token1.decimals);
+
+    const pools = await this.findPoolById(poolId);
+    if (pools.length == 0) {
+      return { message: 'No pools found' };
+    }
+
+    let pool = pools[0];
+    // console.log('Pool', pool);
+
+    let currentTick = parseFloat(pool.tick);
+
+    let currentSqrtPrice = parseFloat(pool.sqrtPrice) / 2 ** 96;
+
+    let currentPrice = this.tickToPrice(currentTick);
+
+    let adjestedCurrentPrice = currentPrice / 10 ** (decimals1 - decimals0);
+    console.log(`Current price=${adjestedCurrentPrice} ${token1} for ${token0} at tick ${currentTick}`);
+    let sa = this.tickToPrice(tickerLower / 2);
+    let sb = this.tickToPrice(tickerUpper / 2);
+    let amount0;
+    let amount1;
+    if (tickerUpper <= currentTick) {
+      amount0 = 0;
+      amount1 = liquidity * (sb - sa);
+    } else if (tickerLower < currentTick && currentTick < tickerUpper) {
+      amount0 = ((liquidity * (sb - currentSqrtPrice)) / currentSqrtPrice) * sb;
+      amount1 = liquidity * (currentSqrtPrice - sa);
+    } else {
+      amount0 = (liquidity * (sb - sa)) / (sa * sb);
+      amount1 = 0;
+    }
+
+    let adjestedAmount0 = amount0 / 10 ** decimals0;
+    let adjestedAmount1 = amount1 / 10 ** decimals1;
+  }
+
   async compute(userAddress: string | any) {
     try {
       const positions = await this.findPositionsByUserAddress(userAddress);
@@ -174,7 +219,10 @@ export default class Positions {
       console.log('Found some positions', positions.length);
 
       let position = positions[0];
-      console.log(position);
+
+      for (const i in positions) {
+      }
+      // console.log(position);
 
       let liquidity = parseFloat(position.liquidity);
       let tickerLower = parseFloat(position.tickLower.tickIdx);
@@ -239,20 +287,20 @@ export default class Positions {
       let vint =
         parseFloat(position.withdrawnToken0) * token0Price + parseFloat(position.withdrawnToken1) * token1Price;
 
-      console.log(
-        'adjested amout 0',
-        adjestedAmount0,
-        'adjested amount 1',
-        adjestedAmount1,
-        '\ndeposited token 0',
-        position.depositedToken0,
-        'deposted token 1',
-        position.depositedToken1,
-        '\nwithdrawn token 0',
-        position.withdrawnToken0,
-        'withdrawn token 1',
-        position.withdrawnToken1,
-      );
+      // console.log(
+      //   'adjested amout 0',
+      //   adjestedAmount0,
+      //   'adjested amount 1',
+      //   adjestedAmount1,
+      //   '\ndeposited token 0',
+      //   position.depositedToken0,
+      //   'deposted token 1',
+      //   position.depositedToken1,
+      //   '\nwithdrawn token 0',
+      //   position.withdrawnToken0,
+      //   'withdrawn token 1',
+      //   position.withdrawnToken1,
+      // );
 
       let v_withdraw = v1 + vint;
       console.log('v withdraw', v_withdraw);

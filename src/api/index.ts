@@ -7,5 +7,7 @@ const route = Router();
 export default (app: Router) => {
   app.use('/', route);
 
+
+  // users liquidity positions
   position(app);
 };
