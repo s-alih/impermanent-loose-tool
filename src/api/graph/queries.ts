@@ -83,6 +83,17 @@ export default class GraphQueries {
       positionSnapshots(where:{owner:"${userAddress}",liquidity_gt:0}){
         id,
         owner,
+        liquidity
+        pool {
+          totalValueLockedUSD
+          totalValueLockedToken0
+          totalValueLockedToken1
+          tick
+          liquidity
+          sqrtPrice
+          token0Price
+          token1Price
+        }
         position {
           owner
           id
@@ -96,10 +107,12 @@ export default class GraphQueries {
           tickLower {
             price0
             price1
+            tickIdx
           }
           tickUpper {
             price0
             price1
+            tickIdx
           }
 
           transaction {
@@ -122,6 +135,7 @@ export default class GraphQueries {
             totalValueLockedUSD
             totalValueLockedToken0
             totalValueLockedToken1
+            tick
             liquidity
             sqrtPrice
             token0Price
@@ -152,19 +166,26 @@ export default class GraphQueries {
     return userPositionSnapShots;
   }
 
-  static async getPositionsById(nftId: string) {
+  static async getPositionsByUserAddress(userAddress: string) {
     const query = gql`
       {
-        positions(where: {id: ${nftId}}) {
+        positions(where: { owner: "${userAddress}",liquidity_gt:0 }) {
+          id
           liquidity
           tickLower { tickIdx }
           tickUpper { tickIdx }
+          depositedToken0
+          depositedToken1
+          withdrawnToken0
+          withdrawnToken1
           pool { id }
           token0 {
+            id
             symbol
             decimals
           }
           token1 {
+            id
             symbol
             decimals
           }
@@ -180,9 +201,11 @@ export default class GraphQueries {
   static async getPoolById(id: string) {
     const query = gql`
     {
-      pools(where: {id: ${id}}) {
+      pools(where: {id: "${id}"}) {
         tick
         sqrtPrice
+        token0Price
+        token1Price
       }
     }
     `;

@@ -20,7 +20,8 @@ export default (app: Router) => {
 
     async (req: Request, res: Response, next: NextFunction) => {
       let postions = Container.get(Position);
-      await postions.compute('0x11e4857bb9993a50c685a79afad4e6f65d518dda');
+      console.log(req.query.address);
+      await postions.compute(req.query.address);
       try {
         return res.status(201).json({ message: 'success' });
       } catch (e) {
