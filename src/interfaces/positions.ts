@@ -17,7 +17,7 @@ export interface Position {
 // -------- Returning result with impermenent loss -----
 export interface Result {
   pool: string;
-  loss: number;
+  imploss: string;
 }
 
 export interface PositionSnapshot {

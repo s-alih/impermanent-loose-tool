@@ -37,8 +37,8 @@ export default class Positions {
         let impeloss = ((v_withdraw - v_held) / v_held) * 100;
         console.log(impeloss);
         let result: Result = {
-          pool: `${position.token0.symbol}/${position.token1.symbol}`,
-          loss: impeloss,
+          pool: `${position.token0.symbol}/${position.token1.symbol} Pool`,
+          imploss: `${impeloss.toFixed(2)}%`,
         };
 
         results.push(result);
@@ -55,7 +55,7 @@ export default class Positions {
   tickToPrice(tick: number) {
     return TICK_BASE ** tick;
   }
-  // returns current token amounts in pool w
+  // returns current token amounts in pool
   async findCurrentAmount(position: Position): Promise<{ adjestedAmount0: number; adjestedAmount1: number }> {
     let liquidity = parseFloat(position.liquidity);
     let tickerLower = parseFloat(position.tickLower.tickIdx);
@@ -77,20 +77,20 @@ export default class Positions {
     let currentTick = parseFloat(pool.tick);
 
     let currentSqrtPrice = parseFloat(pool.sqrtPrice) / 2 ** 96;
-    let sa = this.tickToPrice(tickerLower / 2);
-    let sb = this.tickToPrice(tickerUpper / 2);
+    let lowerBound = this.tickToPrice(tickerLower / 2);
+    let upperBound = this.tickToPrice(tickerUpper / 2);
     let amount0;
     let amount1;
 
     // pool tokens amounts
     if (tickerUpper <= currentTick) {
       amount0 = 0;
-      amount1 = liquidity * (sb - sa);
+      amount1 = liquidity * (upperBound - lowerBound);
     } else if (tickerLower < currentTick && currentTick < tickerUpper) {
-      amount0 = ((liquidity * (sb - currentSqrtPrice)) / currentSqrtPrice) * sb;
-      amount1 = liquidity * (currentSqrtPrice - sa);
+      amount0 = ((liquidity * (upperBound - currentSqrtPrice)) / currentSqrtPrice) * upperBound;
+      amount1 = liquidity * (currentSqrtPrice - lowerBound);
     } else {
-      amount0 = (liquidity * (sb - sa)) / (sa * sb);
+      amount0 = (liquidity * (upperBound - lowerBound)) / (lowerBound * upperBound);
       amount1 = 0;
     }
 
